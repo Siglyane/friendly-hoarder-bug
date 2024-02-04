@@ -1,0 +1,14 @@
+# Build results
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+
+## TODO: If you have NuGet Package Restore enabled, uncomment the next line
+packages/
+
+.vs/
+
+*.sln.docstates
