@@ -1,13 +1,12 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
-using FriendlyBug;
-using FriendlyBug.Patches;
+using FriendlyHoarderBug.src.Network;
+using FriendlyHoarderBug.src.Patches;
 using GameNetcodeStuff;
 using HarmonyLib;
-using HoarderFriendlyBug.Network;
 using RuntimeNetcodeRPCValidator;
 
-namespace HoarderFriendlyBug
+namespace FriendlyHoarderBug.src
 {
     [BepInDependency(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_VERSION)]
     [BepInPlugin(modGUID, modName, modVersion)]
@@ -23,7 +22,7 @@ namespace HoarderFriendlyBug
 
         public static FriendlyHoarderBugPlugin Instance;
 
-        private NetcodeValidator netcodeValidator;
+        public static NetcodeValidator netcodeValidator;
 
 
         void Awake()
@@ -35,13 +34,20 @@ namespace HoarderFriendlyBug
             mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
 
             netcodeValidator = new NetcodeValidator(modGUID);
+
             netcodeValidator.PatchAll();
             netcodeValidator.BindToPreExistingObjectByBehaviour<NetworkHandler, PlayerControllerB>();
+            netcodeValidator.BindToPreExistingObjectByBehaviour<HoarderbugNetworkHandler, HoarderBugAI>();
 
             harmony.PatchAll(typeof(FriendlyHoarderBugPlugin));
             harmony.PatchAll(typeof(PlayerControllerBPatch));
             harmony.PatchAll(typeof(HoarderBugAiPatch));
             harmony.PatchAll(typeof(StartOfRoundPatch));
+        }
+
+        private void OnDestroy()
+        {
+            netcodeValidator.Dispose();
         }
     }
 }

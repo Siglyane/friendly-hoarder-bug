@@ -1,10 +1,10 @@
-﻿using GameNetcodeStuff;
-using HoarderFriendlyBug.Components;
+﻿using FriendlyHoarderBug.src.Enum;
+using GameNetcodeStuff;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FriendlyBug.Data
+namespace FriendlyHoarderBug.src.Components
 {
     internal class SharedData
     {
@@ -14,6 +14,8 @@ namespace FriendlyBug.Data
         private readonly Random random = new Random();
 
         //HoarderBug Data
+        public Dictionary<ulong, HoarderBugAI> HoarderBugId = new Dictionary<ulong, HoarderBugAI>();
+
         public Dictionary<HoarderBugAI, bool> HoarderBugIsFriendly = new Dictionary<HoarderBugAI, bool>();
 
         public Dictionary<HoarderBugAI, List<PlayerControllerB>> HoarderBugFriendsList = new Dictionary<HoarderBugAI, List<PlayerControllerB>>();

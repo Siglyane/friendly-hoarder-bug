@@ -1,9 +1,9 @@
-﻿using FriendlyBug.Data;
+﻿using FriendlyHoarderBug.src.Components;
+using FriendlyHoarderBug.src.Network;
 using GameNetcodeStuff;
 using HarmonyLib;
-using HoarderFriendlyBug.Network;
 
-namespace FriendlyBug.Patches
+namespace FriendlyHoarderBug.src.Patches
 {
     [HarmonyPatch(typeof(PlayerControllerB))]
     internal class PlayerControllerBPatch

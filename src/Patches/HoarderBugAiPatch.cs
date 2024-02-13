@@ -1,17 +1,16 @@
-﻿using FriendlyBug.Data;
+﻿using FriendlyHoarderBug.src.Components;
+using FriendlyHoarderBug.src.Enum;
 using HarmonyLib;
-using HoarderFriendlyBug.Components;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace FriendlyBug.Patches
+namespace FriendlyHoarderBug.src.Patches
 {
     [HarmonyPatch(typeof(HoarderBugAI))]
     internal class HoarderBugAiPatch
     {
-
         [HarmonyPatch("GrabTargetItemIfClose")]
         [HarmonyPostfix]
         static void GrabTargetItemIfClosePatch(HoarderBugAI __instance, ref bool __result)
@@ -35,6 +34,7 @@ namespace FriendlyBug.Patches
                         SharedData.Instance.isHoarderBugFriendly[playerWhoHoldItem] = true;
                         SharedData.Instance.HoarderBugFavoriteItem[__instance] = __instance.heldItem;
                         SharedData.Instance.HoarderBugBestFriend[__instance] = playerWhoHoldItem;
+
                     }
 
                     SharedData.UpsertFriendList(__instance);
@@ -49,15 +49,14 @@ namespace FriendlyBug.Patches
 
         [HarmonyPatch("IsHoarderBugAngry")]
         [HarmonyPrefix]
-        static bool IsHoarderBugAngryPatch(HoarderBugAI __instance)
+        static bool IsHoarderBugAngryPatch(HoarderBugAI __instance, bool __result)
         {
             if (SharedData.Instance.HoarderBugIsFriendly.ContainsKey(__instance))
             {
                 return false;
             }
 
-            return true;
-
+            return __result;
         }
 
         [HarmonyPatch("DropItemClientRpc")]
@@ -99,9 +98,9 @@ namespace FriendlyBug.Patches
         static void DoAIIntervalPatch(HoarderBugAI __instance)
         {
             if ((__instance.movingTowardsTargetPlayer ||
-                (__instance.heldItem != null &&
+                __instance.heldItem != null &&
                 SharedData.Instance.HoarderBugFavoriteItem.ContainsKey(__instance) &&
-                SharedData.Instance.HoarderBugFavoriteItem[__instance].itemGrabbableObject != __instance.heldItem.itemGrabbableObject)) &&
+                SharedData.Instance.HoarderBugFavoriteItem[__instance].itemGrabbableObject != __instance.heldItem.itemGrabbableObject) &&
                 SharedData.Instance.HoarderBugIsFriendly.ContainsKey(__instance))
             {
                 __instance.currentBehaviourStateIndex = 0;
@@ -119,8 +118,6 @@ namespace FriendlyBug.Patches
                 )
             {
                 UpdateGiftsList(__instance);
-
-                Debug.Log("GiftFriend");
                 if (__instance.heldItem == null && __instance.targetItem == null)
                 {
                     SetToMoveTowardsGift(ref __instance);
@@ -142,14 +139,11 @@ namespace FriendlyBug.Patches
 
         private static void CheckForFriend(HoarderBugAI __instance)
         {
-            Debug.Log("GetAllPlayersInLineOfSight");
 
-            var PlayersNear = __instance.GetAllPlayersInLineOfSight(70f, 30, __instance.eye, proximityCheck: 1f);
-            Debug.Log("PlayersNear? " + PlayersNear != null);
+            var PlayersNear = __instance.GetAllPlayersInLineOfSight(70f, 30, __instance.eye, proximityCheck: 0.5f);
 
             if (PlayersNear != null && PlayersNear.Any(player => SharedData.Instance.HoarderBugBestFriend[__instance]))
             {
-                Debug.Log("Achei meu amigo");
                 DropItem(__instance);
             }
             else

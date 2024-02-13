@@ -1,4 +1,4 @@
-﻿namespace FriendlyBug
+﻿namespace FriendlyHoarderBug.src.Enum
 {
     public enum HoarderBugGiftStatus
     {

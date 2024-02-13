@@ -1,6 +1,6 @@
-﻿using FriendlyBug;
+﻿using FriendlyHoarderBug.src.Enum;
 
-namespace HoarderFriendlyBug.Components
+namespace FriendlyHoarderBug.src.Components
 {
     public class HoarderBugGifts
     {

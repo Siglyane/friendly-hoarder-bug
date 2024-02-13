@@ -1,7 +1,7 @@
-﻿using FriendlyBug.Data;
+﻿using FriendlyHoarderBug.src.Components;
 using HarmonyLib;
 
-namespace FriendlyBug
+namespace FriendlyHoarderBug.src.Patches
 {
     [HarmonyPatch(typeof(StartOfRound))]
     internal class StartOfRoundPatch
