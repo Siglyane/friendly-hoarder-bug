@@ -8,6 +8,13 @@
 		<DebugType>embedded</DebugType>
 		<PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
 	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="MinVer" Version="4.3.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="NicholaScott.BepInEx.RuntimeNetcodeRPCValidator" Version="0.2.5" />
+	</ItemGroup>
 
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -38,11 +45,4 @@
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NicholaScott.BepInEx.RuntimeNetcodeRPCValidator" Version="0.2.5">
-      <TreatAsUsed>true</TreatAsUsed>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>
